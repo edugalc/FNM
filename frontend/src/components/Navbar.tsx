@@ -1,5 +1,9 @@
 "use client";
 
+
+
+
+
 import Cart from './Cart';
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
@@ -14,13 +18,13 @@ export default function Navbar() {
     if (token) {
       router.push("/dashboard"); 
     } else {
-      router.push("/login"); // No logueado → Login
+      router.push("/login"); 
     }
   };
 
   const handleLogoutClick = () => {
-    logout(); // Borra token
-    router.push("/"); // Redirige al Home
+    logout(); 
+    router.push("/"); 
   };
 
   const handleRegisterClick = () => {
@@ -31,12 +35,12 @@ export default function Navbar() {
     <header>
       <nav className="h-16 w-full flex items-center justify-center bg-white text-black px-6 md:px-20 mt-6">
         <div className="flex justify-between items-center w-full max-w-6xl mx-auto">
-          {/* Logo */}
+       
           <div className="flex items-center gap-3">
             <Image
   src="/logo.png"
   alt="Logo"
-  width={32}   // Ajusta al tamaño que quieras
+  width={32}   
   height={32}
   className="h-8 cursor-pointer"
 />
@@ -45,7 +49,7 @@ export default function Navbar() {
             </h1>
           </div>
 
-          {/* Menú */}
+  
           <ul className="flex items-center gap-4 ml-auto">
             <li>
               <a
@@ -64,7 +68,6 @@ export default function Navbar() {
               </a>
             </li>
 
-            {/* Registro / Dashboard */}
             {!token && (
               <li>
                 <button
@@ -76,7 +79,6 @@ export default function Navbar() {
               </li>
             )}
 
-            {/* Login / Dashboard */}
             <li>
               <button
                 onClick={handleLoginClick}
@@ -86,7 +88,6 @@ export default function Navbar() {
               </button>
             </li>
 
-            {/* Logout */}
             {token && (
               <li>
                 <button
@@ -98,7 +99,6 @@ export default function Navbar() {
               </li>
             )}
 
-            {/* Carrito */}
             <li className="relative cursor-pointer">
               <Cart />
             </li>

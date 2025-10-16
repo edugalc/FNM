@@ -13,26 +13,25 @@ export default function CoursesSection() {
   const [courses, setCourses] = useState<Curso[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch("http://localhost:3001/curso/ui")
-      .then(async (res) => {
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(`HTTP ${res.status}: ${text}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setCourses(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error al cargar cursos:", err);
-        setError("No se pudieron cargar los cursos. Intenta más tarde.");
-        setLoading(false);
-      });
-  }, []);
+useEffect(() => {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/curso/ui`)
+    .then(async (res) => {
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`HTTP ${res.status}: ${text}`);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      setCourses(data);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("Error al cargar cursos:", err);
+      setError("No se pudieron cargar los cursos. Intenta más tarde.");
+      setLoading(false);
+    });
+}, []);
 
   if (loading) {
     return (
@@ -55,7 +54,7 @@ export default function CoursesSection() {
             onClick={() => {
               setError(null);
               setLoading(true);
-              fetch("http://localhost:3001/curso/ui")
+              fetch(`${process.env.NEXT_PUBLIC_API_URL}/curso/ui`)
                 .then((r) => r.json())
                 .then((data) => {
                   setCourses(data);

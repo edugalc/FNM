@@ -30,22 +30,23 @@ export default function LastCourses() {
     ],
   };
 
-  useEffect(() => {
-    fetch("http://localhost:3001/curso/ui") 
-      .then((res) => res.json())
-      .then((data) => {
-        setCourses(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error al cargar cursos:", err);
-        setLoading(false);
-      });
-  }, []);
+useEffect(() => {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/curso/ui`)
+    .then((res) => res.json())
+    .then((data) => {
+      setCourses(data);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("Error al cargar cursos:", err);
+      setLoading(false);
+    });
+}, []);
+
 
   if (loading) return <p className="text-center py-10">Cargando cursos...</p>;
   if (!courses.length)
-    return <p className="text-center py-10">No hay cursos disponibles.</p>;
+    return <p className="text-center py-10 bg-black">No hay cursos disponibles.</p>;
 
   return (
     <section className="bg-white py-16 px-6 md:px-20">
