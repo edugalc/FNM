@@ -2,9 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Slider from "react-slick";
+import Image from "next/image";
+
+type Course = {
+  id: string;
+  titulo: string;
+  descripcion: string;
+  precio: number;
+  imagen?: string; // si usas una url de imagen
+};
 
 export default function LastCourses() {
-  const [courses, setCourses] = useState<any[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
 
   const settings = {
@@ -48,11 +57,13 @@ export default function LastCourses() {
         {courses.map((curso) => (
           <div key={curso.id} className="px-2">
             <div className="bg-gray-50 shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition">
-              <img
-                src={`https://source.unsplash.com/random/400x250?education,${curso.titulo}`}
-                alt={curso.titulo}
-                className="w-full h-48 object-cover"
-              />
+              <Image
+  src={`https://source.unsplash.com/random/400x250?education,${curso.titulo}`}
+  alt={curso.titulo}
+  width={400}       // ancho real de la imagen
+  height={250}      // alto real de la imagen
+  className="w-full h-48 object-cover"
+/>
               <div className="p-5 flex flex-col justify-between h-full">
                 <div>
                   <h3 className="text-xl font-semibold mb-2">{curso.titulo}</h3>

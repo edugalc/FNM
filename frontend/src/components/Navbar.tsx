@@ -3,6 +3,8 @@
 import Cart from './Cart';
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+
 
 export default function Navbar() {
   const { token, logout } = useAuth();
@@ -31,7 +33,13 @@ export default function Navbar() {
         <div className="flex justify-between items-center w-full max-w-6xl mx-auto">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <img className="h-8" src="/logo.png" alt="Logo" />
+            <Image
+  src="/logo.png"
+  alt="Logo"
+  width={32}   // Ajusta al tamaño que quieras
+  height={32}
+  className="h-8 cursor-pointer"
+/>
             <h1 className="text-4xl font-pacifico cursor-pointer" onClick={() => router.push("/")}>
               Femeninamente
             </h1>

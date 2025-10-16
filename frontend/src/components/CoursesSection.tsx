@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 type Curso = {
   id: number;
@@ -93,11 +94,13 @@ export default function CoursesSection() {
                 className="flex flex-col h-full bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden transition hover:shadow-lg"
               >
                 <div className="h-48 w-full">
-                  <img
-                    src={`https://source.unsplash.com/800x450/?therapy,${encodeURIComponent(curso.titulo)}`}
-                    alt={curso.titulo}
-                    className="w-full h-full object-cover"
-                  />
+                  <Image
+  src={`https://source.unsplash.com/800x450/?therapy,${encodeURIComponent(curso.titulo)}`}
+  alt={curso.titulo}
+  width={800}      // ancho real de la imagen
+  height={450}     // alto real de la imagen
+  className="w-full h-full object-cover"
+/>
                 </div>
 
                 <div className="p-6 flex flex-col flex-1">
