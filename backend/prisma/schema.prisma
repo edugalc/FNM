@@ -1,0 +1,212 @@
+// This is your Prisma schema file
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// ENUMS
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum PagoStatus {
+  PENDIENTE
+  COMPLETADO
+  CANCELADO
+}
+
+enum TipoPregunta {
+  OPCION_MULTIPLE
+  VERDADERO_FALSO
+  ABIERTA
+}
+
+
+// MODELOS PRINCIPALES
+
+
+model User {
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  password  String
+  role      Role       @default(USER)
+  reservas  Reserva[]
+  cursos    CursoUser[]
+  pagos     Pago[]
+  carritos  Carrito[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+// RESERVAS
+
+model Reserva {
+  id        Int       @id @default(autoincrement())
+  fecha     DateTime
+  hora      String
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Curso {
+  id           Int       @id @default(autoincrement())
+  titulo       String
+  descripcion  String
+  precio       Float     @default(0)
+  secciones    Seccion[]
+  usuarios     CursoUser[]
+  pagos        Pago[]
+  carritoItems CarritoItem[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Seccion {
+  id        Int        @id @default(autoincrement())
+  titulo    String
+  curso     Curso      @relation(fields: [cursoId], references: [id])
+  cursoId   Int
+  lecciones Leccion[]
+  orden     Int        @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Leccion {
+  id           Int          @id @default(autoincrement())
+  titulo       String
+  contenido    String?
+  seccion      Seccion      @relation(fields: [seccionId], references: [id])
+  seccionId    Int
+  videos       Video[]
+  cuestionario Cuestionario?
+  orden        Int          @default(0)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model Video {
+  id        Int      @id @default(autoincrement())
+  titulo    String
+  url       String
+  leccion   Leccion  @relation(fields: [leccionId], references: [id])
+  leccionId Int
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Cuestionario {
+  id        Int         @id @default(autoincrement())
+  leccion   Leccion     @relation(fields: [leccionId], references: [id])
+  leccionId Int         @unique
+  preguntas Pregunta[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model Pregunta {
+  id               Int          @id @default(autoincrement())
+  texto            String
+  tipo             TipoPregunta @default(OPCION_MULTIPLE)
+  cuestionario     Cuestionario @relation(fields: [cuestionarioId], references: [id])
+  cuestionarioId   Int
+  opciones         Opcion[]
+  respuestaCorrecta String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+}
+
+model Opcion {
+  id          Int       @id @default(autoincrement())
+  texto       String
+  esCorrecta  Boolean   @default(false)
+  pregunta    Pregunta  @relation(fields: [preguntaId], references: [id])
+  preguntaId  Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// RELACIÓN USUARIO - CURSO
+
+model CursoUser {
+  id        Int      @id @default(autoincrement())
+  curso     Curso    @relation(fields: [cursoId], references: [id])
+  cursoId   Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cursoId, userId])
+}
+
+
+// EBOOKS Y PAGOS
+
+model Ebook {
+  id           Int            @id @default(autoincrement())
+  titulo       String
+  archivo      String
+  precio       Float
+  pagos        Pago[]
+  carritoItems CarritoItem[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model Pago {
+  id        Int        @id @default(autoincrement())
+  user      User       @relation(fields: [userId], references: [id])
+  userId    Int
+  ebook     Ebook?     @relation(fields: [ebookId], references: [id])
+  ebookId   Int?
+  curso     Curso?     @relation(fields: [cursoId], references: [id])
+  cursoId   Int?
+  status    PagoStatus
+  monto     Float
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+// CARRITO
+
+model Carrito {
+  id        Int           @id @default(autoincrement())
+  user      User          @relation(fields: [userId], references: [id])
+  userId    Int
+  items     CarritoItem[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model CarritoItem {
+  id         Int        @id @default(autoincrement())
+  carrito    Carrito    @relation(fields: [carritoId], references: [id])
+  carritoId  Int
+  curso      Curso?     @relation(fields: [cursoId], references: [id])
+  cursoId    Int?
+  ebook      Ebook?     @relation(fields: [ebookId], references: [id])
+  ebookId    Int?
+  cantidad   Int        @default(1)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@unique([carritoId, cursoId])
+  @@unique([carritoId, ebookId])
+}
+
+
