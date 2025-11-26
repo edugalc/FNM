@@ -1,22 +1,22 @@
-import { IsString, IsOptional, IsEnum, ValidateNested, IsArray } from 'class-validator';
+import { IsString, IsOptional, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { TipoPregunta } from '@prisma/client';
 import { CreateOpcionDto } from './create-opcion.dto';
 
 export class CreatePreguntaDto {
   @IsString()
-  texto: string;
+  texto!: string;
 
-  @IsEnum(TipoPregunta)
-  tipo: TipoPregunta;
+  @IsOptional()
+  @IsString()
+  tipo?: string = 'OPCION_MULTIPLE';
+
+  @IsOptional()
+  @IsString()
+  respuestaCorrecta?: string | null;
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateOpcionDto)
-  opciones?: CreateOpcionDto[];
-
-  @IsOptional()
-  @IsString()
-  respuestaCorrecta?: string;
+  opciones?: CreateOpcionDto[] = [];
 }

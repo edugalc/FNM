@@ -1,9 +1,10 @@
-import { IsString, IsBoolean } from 'class-validator';
+import { IsString, IsBoolean, IsOptional } from 'class-validator';
 
 export class CreateOpcionDto {
   @IsString()
-  texto: string;
+  texto!: string;
 
   @IsBoolean()
-  esCorrecta: boolean;
+  @IsOptional()
+  esCorrecta?: boolean = false;
 }

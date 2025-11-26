@@ -23,7 +23,7 @@ const pacifico = Pacifico({
 });
 
 export const metadata: Metadata = {
-  title: "Femenina-Mente",
+  title: "FemeninaMente",
   description: "Cursos y eBooks para crecimiento personal y sanación emocional",
 };
 

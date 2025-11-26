@@ -1,24 +1,25 @@
-import { IsString, IsNumber, IsOptional, ValidateNested, IsArray, IsUrl } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CreateSeccionDto } from './create-seccion.dto';
 
 export class CreateCursoDto {
   @IsString()
-  titulo: string;
+  titulo!: string;
 
   @IsString()
-  descripcion: string;
-
-  @IsNumber()
-  precio: number;
+  descripcion!: string;
 
   @IsOptional()
-  @IsUrl()
-  imagenUrl?: string; // nueva propiedad para la URL de la imagen
+  @IsNumber()
+  precio?: number = 0;
+
+  @IsOptional()
+  @IsString()
+  imagenUrl?: string | null;
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateSeccionDto)
-  secciones?: CreateSeccionDto[];
+  secciones?: CreateSeccionDto[] = [];
 }

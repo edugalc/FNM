@@ -1,22 +1,32 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import * as express from 'express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.use('/stripe/webhook', express.raw({ type: 'application/json' }));
+
   app.enableCors({
-    origin: 'http://localhost:3000', // URL del frontend
-    credentials: true,               
+    origin: 'http://localhost:3000',
+    credentials: true,
   });
+
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads/',
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,             // elimina propiedades no definidas en el DTO
-      forbidNonWhitelisted: true,  // lanza error si llegan propiedades extra
-      transform: true,             // convierte automáticamente strings a number, etc.
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
     }),
   );
 
   await app.listen(3001);
-  console.log('Servidor corriendo en http://localhost:3001');
 }
 bootstrap();

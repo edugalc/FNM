@@ -2,10 +2,10 @@ import { IsString, IsOptional, IsNumber } from 'class-validator';
 
 export class CreateVideoDto {
   @IsString()
-  titulo: string;
+  titulo!: string;
 
   @IsString()
-  url: string;
+  url!: string;
 
   @IsOptional()
   @IsNumber()

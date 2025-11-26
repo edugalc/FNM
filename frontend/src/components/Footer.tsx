@@ -1,35 +1,32 @@
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-{#e1e1e1} text-black py-6 mt-10">
-      <div className="flex items-center gap-3 justify-center mb-4">
+    <footer className="bg-white border-t border-[#e1e1e1] text-black py-10 mt-10">
+      {/* Marca */}
+      <div className="flex items-center justify-center mb-6">
         <h1 className="text-4xl font-pacifico">Femeninamente</h1>
       </div>
-      <ul className="flex gap-6 justify-center mb-4">
-        <li>
-          <a href="#" className="text-black hover:text-gray-600 transition-colors">
-            <FaFacebookF size={20} />
-          </a>
-        </li>
-        <li>
-          <a href="#" className="text-black hover:text-gray-600 transition-colors">
-            <FaTwitter size={20} />
-          </a>
-        </li>
-        <li>
-          <a href="#" className="text-black hover:text-gray-600 transition-colors">
-            <FaInstagram size={20} />
-          </a>
-        </li>
-        <li>
-          <a href="#" className="text-black hover:text-gray-600 transition-colors">
-            <FaLinkedin size={20} />
-          </a>
-        </li>
+
+      {/* Redes sociales */}
+      <ul className="flex gap-6 justify-center mb-6">
+        {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedin].map((Icon, index) => (
+          <li key={index}>
+            <a
+              href="#"
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:bg-black hover:text-white transition-all"
+            >
+              <Icon size={18} />
+            </a>
+          </li>
+        ))}
       </ul>
+
+      {/* Copyright */}
       <div className="text-center px-4">
-        <p>&copy; {new Date().getFullYear()} Femininamente. Todos los derechos reservados.</p>
+        <p className="text-sm text-gray-600">
+          &copy; {new Date().getFullYear()} Femeninamente. Todos los derechos reservados.
+        </p>
       </div>
     </footer>
   );

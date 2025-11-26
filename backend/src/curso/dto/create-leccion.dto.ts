@@ -1,15 +1,15 @@
-import { IsString, IsOptional, ValidateNested, IsArray, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsArray, ValidateNested, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CreateVideoDto } from './create-video.dto';
 import { CreateCuestionarioDto } from './create-cuestionario.dto';
 
 export class CreateLeccionDto {
   @IsString()
-  titulo: string;
+  titulo!: string;
 
   @IsOptional()
   @IsString()
-  contenido?: string;
+  contenido?: string | null;
 
   @IsOptional()
   @IsNumber()
@@ -19,10 +19,10 @@ export class CreateLeccionDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateVideoDto)
-  videos?: CreateVideoDto[];
+  videos?: CreateVideoDto[] = [];
 
   @IsOptional()
   @ValidateNested()
   @Type(() => CreateCuestionarioDto)
-  cuestionario?: CreateCuestionarioDto;
+  cuestionario?: CreateCuestionarioDto | null;
 }

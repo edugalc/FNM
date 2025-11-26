@@ -1,10 +1,10 @@
-import { IsString, IsOptional, ValidateNested, IsArray, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsArray, ValidateNested, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CreateLeccionDto } from './create-leccion.dto';
 
 export class CreateSeccionDto {
   @IsString()
-  titulo: string;
+  titulo!: string;
 
   @IsOptional()
   @IsNumber()
@@ -14,5 +14,5 @@ export class CreateSeccionDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateLeccionDto)
-  lecciones?: CreateLeccionDto[];
+  lecciones?: CreateLeccionDto[] = [];
 }

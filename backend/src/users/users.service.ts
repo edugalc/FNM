@@ -1,24 +1,28 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 
+const ALLOWED_ROLES = ['USER', 'ADMIN'] as const;
+type Role = (typeof ALLOWED_ROLES)[number];
+
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  // 🔹 Crear usuario (registro)
   async createUser(data: CreateUserDto) {
-    // Verificar si ya existe el correo
+    if (data.role && !ALLOWED_ROLES.includes(data.role as Role)) {
+      throw new BadRequestException('Rol inválido');
+    }
+
     const existingUser = await this.prisma.user.findUnique({
       where: { email: data.email },
     });
     if (existingUser) {
-      throw new Error('El correo ya está registrado');
+      throw new BadRequestException('El correo ya está registrado');
     }
 
-    // Encriptar contraseña
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
     return this.prisma.user.create({
@@ -26,50 +30,53 @@ export class UserService {
         name: data.name,
         email: data.email,
         password: hashedPassword,
+        role: data.role ?? 'USER',
       },
       select: {
         id: true,
         name: true,
         email: true,
+        role: true,
         createdAt: true,
       },
     });
   }
 
-  // 🔹 Obtener todos los usuarios
   async findAllUsers() {
     return this.prisma.user.findMany({
-      select: { id: true, name: true, email: true, createdAt: true },
+      select: { id: true, name: true, email: true, role: true, createdAt: true },
       orderBy: { createdAt: 'desc' },
     });
   }
 
-  // 🔹 Obtener un usuario por ID
   async findUserById(id: number) {
     const user = await this.prisma.user.findUnique({
       where: { id },
-      select: { id: true, name: true, email: true, createdAt: true },
+      select: { id: true, name: true, email: true, createdAt: true, role: true },
     });
     if (!user) throw new NotFoundException('Usuario no encontrado');
     return user;
   }
 
-  // 🔹 Actualizar usuario
   async updateUser(id: number, data: UpdateUserDto) {
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) throw new NotFoundException('Usuario no encontrado');
 
+    if (data.role && !ALLOWED_ROLES.includes(data.role as Role)) {
+      throw new BadRequestException('Rol inválido');
+    }
+
     return this.prisma.user.update({
       where: { id },
       data: {
-        name: data.name,
-        email: data.email,
+        name: data.name ?? undefined,
+        email: data.email ?? undefined,
+        role: data.role ?? undefined,
       },
-      select: { id: true, name: true, email: true },
+      select: { id: true, name: true, email: true, role: true },
     });
   }
 
-  // 🔹 Eliminar usuario
   async deleteUser(id: number) {
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) throw new NotFoundException('Usuario no encontrado');
