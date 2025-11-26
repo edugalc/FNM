@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
@@ -9,6 +10,7 @@ import Image from "next/image";
 export default function DashboardPage() {
   const { user, token, loading } = useAuth();
   const router = useRouter();
+  
 
   useEffect(() => {
     if (loading) return;

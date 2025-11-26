@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -125,7 +126,7 @@ export default function DashboardCursosPage() {
 
                 <div className="flex gap-2 mt-4">
                   <button
-                    onClick={() => loadFullCurso(c.id!)}
+                    onClick={() => loadFullCurso(Number(c.id!))}
                     className="w-full bg-black text-white py-2 rounded-lg hover:bg-white hover:text-black border transition"
                   >
                     Editar

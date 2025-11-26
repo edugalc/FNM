@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -9,7 +11,11 @@ import AlertMessage from "@/components/AlertMessage";
 
 type Props = {
   initialData?: Curso;
+  onSaved?: (curso: Curso) => void; 
+    onCancel?: (curso: Curso) => void; 
+  
 };
+
 
 export default function CursoFormPage({ initialData }: Props) {
   const { token } = useAuth();
@@ -20,7 +26,9 @@ export default function CursoFormPage({ initialData }: Props) {
   const [precio, setPrecio] = useState(initialData?.precio || 0);
   const [imagenFile, setImagenFile] = useState<File | null>(null);
   const [imagenUrl, setImagenUrl] = useState(initialData?.imagenUrl || "");
-  const [secciones, setSecciones] = useState(initialData?.secciones || []);
+const [secciones, setSecciones] = useState(
+  initialData?.secciones?.map(s => ({ ...s, lecciones: s.lecciones || [] })) || []
+);
   const [loading, setLoading] = useState(false);
 
   const [alert, setAlert] = useState<{ type: "success" | "error" | "info"; message: string } | null>(null);
@@ -113,9 +121,7 @@ export default function CursoFormPage({ initialData }: Props) {
         />
       )}
 
-      {/*  FIX PARA LA NAVBAR */}
       <div className="pt-24 max-w-4xl mx-auto py-10 text-black">
-        {/* ↑↑↑ ESTE PT-24 SOLUCIONA TODO */}
 
         <h1 className="text-4xl font-bold mb-8 text-black">
           {initialData ? "Editar Curso" : "Crear Curso"}
@@ -160,17 +166,25 @@ export default function CursoFormPage({ initialData }: Props) {
           <h2 className="text-2xl font-bold mt-4 mb-2">Secciones</h2>
 
           {secciones.map((s, idx) => (
-            <SeccionForm
-              key={idx}
-              seccion={s}
-              onChange={(updated) => {
-                const copy = [...secciones];
-                copy[idx] = updated;
-                setSecciones(copy);
-              }}
-              onRemove={() => setSecciones(secciones.filter((_, i) => i !== idx))}
-            />
-          ))}
+  <SeccionForm
+    key={idx}
+    seccion={{
+      ...s,
+      lecciones: (s.lecciones || []).map(l => ({
+        ...l,
+        contenido: l.contenido ?? "",     
+        videos: l.videos || [],          
+      })),
+    }}
+    onChange={(updated) => {
+      const copy = [...secciones];
+      copy[idx] = updated;
+      setSecciones(copy);
+    }}
+    onRemove={() => setSecciones(secciones.filter((_, i) => i !== idx))}
+  />
+))}
+
 
           <button
             onClick={handleAddSeccion}

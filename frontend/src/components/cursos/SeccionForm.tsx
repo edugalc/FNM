@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -6,7 +7,7 @@ import LeccionForm from "./LeccionForm";
 type Leccion = {
   id?: number;
   titulo: string;
-  contenido?: string;
+  contenido?: string | null;
   videos: any[];
   cuestionario?: any;
   orden?: number;

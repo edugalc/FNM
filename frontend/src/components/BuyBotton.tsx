@@ -2,7 +2,18 @@
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 
-export default function BuyButton({ producto }) {
+interface Producto {
+id: number;
+tipo: string;
+titulo: string;
+precio: number;
+}
+
+interface BuyButtonProps {
+producto: Producto;
+}
+
+export default function BuyButton({ producto }: BuyButtonProps) {
   const [loading, setLoading] = useState(false);
   const { user, token } = useAuth();
 

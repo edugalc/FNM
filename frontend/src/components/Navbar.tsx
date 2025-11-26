@@ -3,7 +3,6 @@
 import Cart from "./Cart";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useCartStore } from "@/store/cartStore";

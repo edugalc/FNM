@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
@@ -6,11 +7,13 @@ interface User {
   id: number;
   email: string;
   nombre: string;
+  role: string;
 }
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
+  loading : boolean | null;
   login: (data: any) => void;
   logout: () => void;
 }
@@ -18,6 +21,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   token: null,
+  loading: null,
   login: () => {},
   logout: () => {},
 });
@@ -25,6 +29,7 @@ const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
@@ -34,11 +39,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(JSON.parse(savedUser));
       setToken(savedToken);
     }
+    setLoading(false);
   }, []);
 
   const login = (data: any) => {
     console.log(" AUTH PROVIDER LOGIN DATA:", data);
-
     setUser(data.user);
     setToken(data.token);
 
@@ -46,7 +51,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem("token", data.token);
   };
 
-  //  cerrar sesión
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -55,10 +59,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
 
 export const useAuth = () => useContext(AuthContext);

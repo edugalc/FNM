@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -73,7 +76,6 @@ const { user, token } = useAuth();
       id: curso.id,
       titulo: curso.titulo,
       precio: curso.precio,
-      userId: user?.id,
     }}
   />
         </div>

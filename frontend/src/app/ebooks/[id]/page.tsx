@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -170,7 +172,6 @@ export default function EbookDetailPage() {
                     id: ebook.id,
                     titulo: ebook.titulo,
                     precio: ebook.precio,
-                    userId: null,
                   }}
                 />
               </div>

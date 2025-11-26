@@ -4,8 +4,14 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+interface Ebook {
+id: number;
+titulo: string;
+portada?: string;
+}
+
 export default function FeaturedEbooks() {
-  const [ebooks, setEbooks] = useState([]);
+  const [ebooks, setEbooks] = useState<Ebook[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -52,7 +58,7 @@ export default function FeaturedEbooks() {
           </p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {ebooks.map((ebook, i) => (
+            {ebooks.map((ebook) => (
               <motion.div
                 key={ebook.id}
                 initial={{ opacity: 0, y: 50 }}

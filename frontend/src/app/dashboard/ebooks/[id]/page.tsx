@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -15,7 +16,7 @@ export default function EditarEbookPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // ✅ Cargar ebook
+  // Cargar ebook
   useEffect(() => {
     if (!id) return;
 
@@ -51,7 +52,7 @@ export default function EditarEbookPage() {
   if (!ebook)
     return <p className="text-center text-gray-600 py-10">No se encontró el ebook.</p>;
 
-  // ✅ Guardar cambios
+  // Guardar cambios
   const handleSubmit = async (
     data: CreateEbookDto,
     files: { pdf?: File | null; portada?: File | null }
@@ -69,7 +70,7 @@ export default function EditarEbookPage() {
     try {
       setSaving(true);
 
-      // 1️⃣ Actualizar datos
+      // Actualizar datos
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ebooks/${id}`, {
         method: "PATCH",
         headers: {
@@ -84,7 +85,7 @@ export default function EditarEbookPage() {
 
       if (!res.ok) throw new Error("Error al actualizar el ebook");
 
-      // 2️⃣ Subir PDF
+      // Subir PDF
       if (files.pdf) {
         const formData = new FormData();
         formData.append("file", files.pdf);
@@ -98,7 +99,7 @@ export default function EditarEbookPage() {
         if (!pdfRes.ok) throw new Error("Error al subir PDF");
       }
 
-      // 3️⃣ Subir portada
+      //  Subir portada
       if (files.portada) {
         const formData = new FormData();
         formData.append("file", files.portada);

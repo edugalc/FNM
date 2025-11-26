@@ -1,7 +1,21 @@
 "use client";
 import { useState } from "react";
+interface CartItem {
+id: number;
+cantidad: number;
+ebook: {
+id: number;
+titulo: string;
+precio: number;
+};
+}
 
-export default function PagarCarritoButton({ items, userId }) {
+interface PagarCarritoButtonProps {
+items: CartItem[];
+userId: number;
+}
+
+export default function PagarCarritoButton({ items, userId }: PagarCarritoButtonProps) {
   const [loading, setLoading] = useState(false);
 
   const handleCheckout = async () => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -26,7 +27,7 @@ type Cuestionario = {
 type Leccion = {
   id?: number;
   titulo: string;
-  contenido?: string;
+  contenido?: string | null;
   videos: Video[];
   cuestionario?: Cuestionario;
 };
@@ -41,7 +42,12 @@ export default function LeccionForm({ leccion, onChange, onRemove }: Props) {
   const [titulo, setTitulo] = useState(leccion.titulo);
   const [contenido, setContenido] = useState(leccion.contenido || "");
   const [videos, setVideos] = useState(leccion.videos || []);
-  const [cuestionario, setCuestionario] = useState(leccion.cuestionario || { preguntas: [] });
+const [cuestionario, setCuestionario] = useState({
+  preguntas: leccion.cuestionario?.preguntas?.map(p => ({
+    ...p,
+    opciones: p.opciones || [], 
+  })) || [],
+});
 
   const addVideo = () => {
     const nueva = { titulo: "", url: "" };

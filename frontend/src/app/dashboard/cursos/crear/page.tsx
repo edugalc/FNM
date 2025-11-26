@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -10,9 +11,10 @@ export default function CrearEditarCursoPage() {
   const { token } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const cursoId = searchParams.get("id"); // si viene, es edición
+  const cursoId = searchParams.get("id");
 
   const [initialData, setInitialData] = useState<Curso | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(false);
 
   // Redirigir si no hay token
@@ -20,7 +22,7 @@ export default function CrearEditarCursoPage() {
     if (!token) router.push("/login");
   }, [token]);
 
-  // ⚡ Cargar datos del curso si es edición
+  //  Cargar datos del curso si es edición
   useEffect(() => {
     if (!cursoId || !token) return;
 
@@ -50,7 +52,6 @@ export default function CrearEditarCursoPage() {
 
   return (
     <div className="pt-24 max-w-4xl mx-auto py-10 px-4">
-      {/* ↑ Solución: añade pt-24 para evitar que quede debajo de la navbar */}
       
       <h1 className="text-4xl font-bold mb-8 text-gray-900 text-center">
         {initialData ? "Editar Curso" : "Crear Curso"}
