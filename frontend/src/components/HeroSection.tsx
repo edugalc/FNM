@@ -23,9 +23,11 @@ export default function HeroSection() {
           transition={{ duration: 0.8 }}
           className="max-w-xl"
         >
-          <h1 className="text-5xl font-bold mb-6 leading-tight text-black">
-            Sanar y crecer desde el corazón
-          </h1>
+<h1 className="text-5xl font-bold mb-6 leading-tight text-black">
+  Sanar y crecer <br />
+  desde el <span className="text-pink-500">corazón</span>
+</h1>
+
 
           <p className="text-lg text-gray-700 mb-10">
             En Femenina-Mente te acompañamos a fortalecer tu bienestar emocional 
@@ -36,10 +38,10 @@ export default function HeroSection() {
           <div className="flex gap-4">
             <button
               onClick={() => setShowForm(true)}
-              className="inline-block bg-black text-white rounded-md px-8 py-3 font-medium border border-black 
-              hover:bg-white hover:text-black transition-all hover:scale-[1.03]"
+              className="inline-block bg-pink-500 text-white rounded-md px-8 py-3 font-medium border border-pink-500 
+              hover:bg-white hover:text-black qtransition-all hover:scale-[1.03]"
             >
-              Únete
+             <strong>Únete</strong>
             </button>
 
             <a

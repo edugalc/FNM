@@ -43,9 +43,10 @@ export default function Navbar() {
             className="flex items-center gap-3 cursor-pointer select-none"
             onClick={() => router.push("/")}
           >
-            <h1 className="text-3xl md:text-4xl font-pacifico tracking-tight text-black">
-              Femeninamente
-            </h1>
+<h1 className="text-3xl md:text-4xl font-pacifico tracking-tight text-black">
+  Femenina<span className="font-Geist">-</span><span className="text-pink-500">mente</span>
+</h1>
+
           </div>
 
           {/* LINKS */}
@@ -73,7 +74,7 @@ export default function Navbar() {
               <li>
                 <button
                   onClick={() => router.push("/register")}
-                  className="rounded-xl px-5 py-2 bg-black text-white border border-black hover:bg-white hover:text-black transition-all duration-200"
+                  className="rounded-xl px-5 py-2 bg-pink-500 text-white border border-pink-500 hover:bg-white hover:text-black transition-all duration-200"
                 >
                   Únete
                 </button>

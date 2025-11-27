@@ -5,7 +5,9 @@ export default function Footer() {
     <footer className="bg-white border-t border-[#e1e1e1] text-black py-10 mt-10">
       {/* Marca */}
       <div className="flex items-center justify-center mb-6">
-        <h1 className="text-4xl font-pacifico">Femeninamente</h1>
+        <h1 className="text-3xl md:text-4xl font-pacifico tracking-tight text-black">
+  Femenina<span className="font-Geist">-</span><span className="text-pink-500">mente</span>
+</h1>
       </div>
 
       {/* Redes sociales */}
