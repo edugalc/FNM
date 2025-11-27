@@ -13,8 +13,8 @@ async function bootstrap() {
 
   const allowedOrigins = [
     'http://localhost:3000',
-    process.env.FRONTEND_URL,
-  ].filter(Boolean) as string[];
+    'https://femeninamente-eduardo-darios-projects.vercel.app',
+  ];
 
   app.enableCors({
     origin: allowedOrigins,
