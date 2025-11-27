@@ -8,6 +8,7 @@ import * as express from 'express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  // Stripe webhook must receive the body RAW
   app.use('/stripe/webhook', express.raw({ type: 'application/json' }));
 
   const allowedOrigins = [
@@ -32,8 +33,9 @@ async function bootstrap() {
     }),
   );
 
-  const port = process.env.PORT || 3001;
-  await app.listen(port);
+  //  Railway te da el puerto en process.env.PORT
+  const port = Number(process.env.PORT) || 3001;
+  await app.listen(port, '0.0.0.0');
 }
 
 bootstrap();
