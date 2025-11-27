@@ -86,12 +86,13 @@ export default function LoginForm() {
     <div className="max-w-lg mx-auto relative">
 
       {toast && (
-        <div
-          className={`fixed top-6 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-xl shadow-lg text-white z-50 transition
-          ${toast.type === "error" ? "bg-red-600" : "bg-green-600"}`}
-        >
-          {toast.message}
-        </div>
+<div
+  className={`fixed top-6 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-xl shadow-lg text-white z-[9999] transition
+  ${toast.type === "error" ? "bg-red-600" : "bg-green-600"}`}
+>
+  {toast.message}
+</div>
+
       )}
 
       <div className="bg-white rounded-3xl shadow-lg p-10">
